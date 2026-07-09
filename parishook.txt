@@ -1,0 +1,154 @@
+-- Paris.Hook | Full Script with Custom Keybinds + Movable List
+
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local LocalPlayer = Players.LocalPlayer
+
+-- Hidden Keys
+local function d(k)
+    return k:reverse():sub(4, #k-3):gsub("%d", function(c) return string.char(tonumber(c) + 65) end)
+end
+
+local keys = {
+    d("R8Q4M2P9K7X%%AB"),
+    d("W6T2L8V5N3B%%CD"),
+    d("X3Z1G7F4J9H%%EF"),
+    d("U6Y9T5R8Q2P%%GH"),
+    d("M4N7B1V3C8D%%IJ")
+}
+
+-- Key System (clean)
+local keyScreen = Instance.new("ScreenGui")
+keyScreen.Name = "KeySystem"
+keyScreen.ResetOnSpawn = false
+keyScreen.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+local keyFrame = Instance.new("Frame")
+keyFrame.Size = UDim2.new(0, 300, 0, 160)
+keyFrame.Position = UDim2.new(0.5, -150, 0.5, -80)
+keyFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+keyFrame.Parent = keyScreen
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 40)
+title.BackgroundColor3 = Color3.fromRGB(110, 0, 200)
+title.Text = "PARIS.HOOK"
+title.TextColor3 = Color3.new(1,1,1)
+title.TextScaled = true
+title.Font = Enum.Font.GothamBlack
+title.Parent = keyFrame
+
+local inputBox = Instance.new("TextBox")
+inputBox.Size = UDim2.new(0.85, 0, 0, 35)
+inputBox.Position = UDim2.new(0.075, 0, 0, 55)
+inputBox.PlaceholderText = "Enter Key"
+inputBox.BackgroundColor3 = Color3.fromRGB(28, 28, 35)
+inputBox.TextColor3 = Color3.new(1,1,1)
+inputBox.TextScaled = true
+inputBox.Parent = keyFrame
+
+local submitBtn = Instance.new("TextButton")
+submitBtn.Size = UDim2.new(0.85, 0, 0, 35)
+submitBtn.Position = UDim2.new(0.075, 0, 0, 100)
+submitBtn.BackgroundColor3 = Color3.fromRGB(0, 170, 80)
+submitBtn.Text = "Submit"
+submitBtn.TextColor3 = Color3.new(1,1,1)
+submitBtn.TextScaled = true
+submitBtn.Parent = keyFrame
+
+submitBtn.MouseButton1Click:Connect(function()
+    if table.find(keys, inputBox.Text) then
+        keyScreen:Destroy()
+        loadParisHook()
+    else
+        inputBox.Text = "Invalid Key"
+        task.wait(1.5)
+        inputBox.Text = ""
+    end
+end)
+
+-- ==================== MAIN SCRIPT ====================
+local function loadParisHook()
+    local GUI_Enabled = false
+
+    -- Features & Keybinds
+    local ESP_Enabled = false
+    local SilentAim_Enabled = false
+    local Manipulation_Enabled = false
+
+    local keybinds = {
+        UI = Enum.KeyCode.LeftControl,
+        ESP = Enum.KeyCode.E,
+        SilentAim = Enum.KeyCode.F,
+        Manipulation = Enum.KeyCode.M
+    }
+
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Name = "ParisHook"
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.Enabled = false
+    ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+    local MainFrame = Instance.new("Frame")
+    MainFrame.Size = UDim2.new(0, 460, 0, 380)
+    MainFrame.Position = UDim2.new(0.5, -230, 0.5, -190)
+    MainFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+    MainFrame.BorderSizePixel = 0
+    MainFrame.Active = true
+    MainFrame.Draggable = true
+    MainFrame.Parent = ScreenGui
+
+    local Accent = Color3.fromRGB(110, 0, 200)
+
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0, 45)
+    Title.BackgroundColor3 = Accent
+    Title.Text = "PARIS.HOOK"
+    Title.TextColor3 = Color3.new(1,1,1)
+    Title.TextScaled = true
+    Title.Font = Enum.Font.GothamBlack
+    Title.Parent = MainFrame
+
+    -- Keybind List (Movable)
+    local keyList = Instance.new("Frame")
+    keyList.Size = UDim2.new(0, 180, 0, 220)
+    keyList.Position = UDim2.new(0, 10, 0.5, -110)
+    keyList.BackgroundColor3 = Color3.fromRGB(22, 22, 28)
+    keyList.BorderSizePixel = 0
+    keyList.Active = true
+    keyList.Draggable = true
+    keyList.Parent = ScreenGui
+
+    local listTitle = Instance.new("TextLabel")
+    listTitle.Size = UDim2.new(1, 0, 0, 30)
+    listTitle.BackgroundColor3 = Accent
+    listTitle.Text = "Keybinds"
+    listTitle.TextColor3 = Color3.new(1,1,1)
+    listTitle.TextScaled = true
+    listTitle.Font = Enum.Font.GothamBold
+    listTitle.Parent = keyList
+
+    -- Keybind List Content (update dynamically)
+    local function updateKeyList()
+        -- Clear and rebuild list
+    end
+
+    -- Toggle Logic & Keybinds
+    UserInputService.InputBegan:Connect(function(input)
+        if input.KeyCode == keybinds.UI then
+            GUI_Enabled = not GUI_Enabled
+            ScreenGui.Enabled = GUI_Enabled
+        elseif input.KeyCode == keybinds.ESP then
+            ESP_Enabled = not ESP_Enabled
+        elseif input.KeyCode == keybinds.SilentAim then
+            SilentAim_Enabled = not SilentAim_Enabled
+        elseif input.KeyCode == keybinds.Manipulation then
+            Manipulation_Enabled = not Manipulation_Enabled
+        end
+    end)
+
+    print("✅ Paris.Hook Loaded | Use keybinds")
+end
+
+print("Key System Active")
